@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<div th:replace="~{fragment :: meta}"></div>
+		
+		<div th:replace="~{fragment :: styles}"></div>
+		
+		<title>レビュー一覧</title>
+	</head>
+	
+	<body>
+		<div class="samuraitravel-wrapper">
+			<!-- ヘッダー -->
+			<div th:replace="~{fragment :: header}"></div>
+			
+			<main>
+				<div class="container samuraitravel-container pb-5">
+					<div class="row justify-content-center">
+						<div class="col-xxl-9 col-xl-10 col-lg-11">
+							 <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+								<ol class="breadcrumb mb-0">
+									<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+									<li class="breadcrumb-item"><a th:href="@{/houses}">民宿一覧</a></li>
+									<li class="breadcrumb-item"><a th:href="@{/houses/__${house.getId()}__}">民宿詳細</a></li>
+									<li class="breadcrumb-item active" aria-current="page">レビュー一覧</li>
+								</ol>
+							 </nav>
+							 
+							 <h1 class="mb-3 text-center">SAMURAIの宿のレビュー一覧</h1>
+							 
+							 <div th:if="${successMessage}" class="alert alert-info">
+							 	<span th:text="${successMessage}"></span>
+							 </div> 
+							 
+							 <div class="container">
+								 <div class="" th:each="reviewpage : ${reviewpage}">
+									 <div class="row d-flex justify-content-center">
+									 	<div class="col-xs-6 d-flex flex-column border rounded w-50">
+									 		<span class="font-weight-bold" th:text="${reviewpage.getUser().getName()}"></span>
+									 		<span class="value-color" th:if="${reviewpage.getEvaluation() == 1}">&#9733;&#9734;&#9734;&#9734;&#9734;</span>
+									 		<span class="value-color" th:if="${reviewpage.getEvaluation() == 2}">&#9733;&#9733;&#9734;&#9734;&#9734;</span>
+									 		<span class="value-color" th:if="${reviewpage.getEvaluation() == 3}">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+									 		<span class="value-color" th:if="${reviewpage.getEvaluation() == 4}">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+									 		<span class="value-color" th:if="${reviewpage.getEvaluation() == 5}">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+									 		<span th:text="${#temporals.format(reviewpage.getCreatedAt().toLocalDateTime(), 'yyyy年MM月dd日')}"></span>
+									 		<span th:text="${reviewpage.getComment()}"></span>
+									 	</div>
+									 </div>
+								 </div>
+							 </div>
+							 
+							 <!-- ページネーション -->
+							 <div th:if="${reviewpage.getTotalPages() > 1}" class="d-flex justify-content-center">
+								<nav aria-label="レビュー一覧ページ">
+									<ul class="pagination">
+										<li class="page-item">
+											<span th:if="${reviewpage.isFirst()}" class="page-link disabled">前</span>
+											<a th:unless="${reviewpage.isFirst()}" th:href="@{/houses/__${house.getId()}__/review (page = ${reviewpage.getNumber() - 1})}" class="page-link samuraitravel-page-link">前</a>
+										</li>
+										<li th:each="i : ${#numbers.sequence(0, reviewpage.getTotalPages() - 1)}" class="page-item">
+											<span th:if="${i == reviewpage.getNumber()}" class="page-link active samuraitravel-active" th:text="${i + 1}"></span>
+											<a th:unless="${i == reviewpage.getNumber()}" th:href="@{/houses/__${house.getId()}__/review (page = ${i})}" class="page-link samuraitravel-page-link" th:text="${i + 1}"></a>
+										</li>
+										<li class="page-item">
+											<span th:if="${reviewpage.isLast()}" class="page-link disabled">次</span>
+											<a th:unless="${reviewpage.isLast()}" th:href="@{/houses/__${house.getId()}__/review (page = ${reviewpage.getNumber() + 1})}" class="page-link samuraitravel-page-link">次</a>
+										</li>
+									</ul>
+								</nav>
+							 </div>
+						</div>
+					</div>
+				</div>
+			</main>
+			
+			<!-- フッター -->
+			<div th:replace="~{fragment :: footer}"></div>
+		</div>
+		
+		<div th:replace="~{fragment :: scripts}"></div>
+	</body>
+</html>
