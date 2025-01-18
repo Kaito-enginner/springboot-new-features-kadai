@@ -26,6 +26,7 @@
 						<h1 class="mb-3 text-center" th:text="${house.getName() + 'のレビュー編集'}"></h1>
 						
 						<form method="post" th:action="@{/houses/__${reviewEditForm.getHouseId()}__/update}" th:object="${reviewEditForm}" class="w-50 justify-content-center">
+							<input type="hidden" th:field="*{id}">
 							<input type="hidden" th:field="*{houseId}">
 							<input type="hidden" th:field="*{userId}">
 							

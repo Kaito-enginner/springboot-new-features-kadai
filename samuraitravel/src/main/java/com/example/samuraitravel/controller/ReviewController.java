@@ -40,9 +40,18 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/review")
-	public String index(@PathVariable(name = "id") Integer id, Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable) {
+	public String index(@PathVariable(name = "id") Integer id,  @AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model,
+						@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable) 
+	{
 		House house = houseRepository.getReferenceById(id);
 		Page<Review> reviewpage = reviewRepository.findByHouse(house, pageable);
+		
+		if(userDetailsImpl != null) {
+			User user = userDetailsImpl.getUser();
+			Integer userId = user.getId();
+			model.addAttribute("userId", userId);
+		}
+		
 		
 		model.addAttribute("house", house);
 		model.addAttribute("reviewpage",reviewpage);
