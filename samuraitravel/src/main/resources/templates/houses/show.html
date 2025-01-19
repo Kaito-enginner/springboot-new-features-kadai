@@ -151,7 +151,7 @@
 							
 							<h1 class="mb-4 text-center">レビュー</h1>
 							
-							<div sec:authorize="isAuthenticated()" class="text-center mb-4">
+							<div th:if="${bool}" sec:authorize="isAuthenticated()" class="text-center mb-4">
 								<button type="button" class="btn shadow-sm w-50 samuraitravel-btn"><a th:href="@{/houses/__${house.getId()}__/register}" class="text-white">レビューを投稿する</a></button>
 							</div>
 							

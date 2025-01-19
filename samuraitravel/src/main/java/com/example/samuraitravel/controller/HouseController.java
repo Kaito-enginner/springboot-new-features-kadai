@@ -85,9 +85,16 @@ public class HouseController {
 		
 		if(userDetailsImpl != null) {
 			User user = userDetailsImpl.getUser();
+			Review reviewCheck = reviewRepository.findByHouseAndUser(house, user);
 			Integer userId = user.getId();
+			if(reviewCheck == null) {
+				Boolean bool = true;
+				model.addAttribute("bool", bool);
+			}
 			model.addAttribute("userId", userId);
 		}
+		
+		
 		
 		model.addAttribute("house", house);
 		model.addAttribute("reviewpage", reviewpage);

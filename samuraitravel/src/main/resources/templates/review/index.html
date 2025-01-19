@@ -36,7 +36,36 @@
 								 <div class="" th:each="reviewpage : ${reviewpage}">
 									 <div class="row d-flex justify-content-center">
 									 	<div class="col-xs-6 d-flex flex-column border rounded w-50">
-									 		<span class="font-weight-bold" th:text="${reviewpage.getUser().getName()}"></span>
+											<div class="container p-0">
+												<div class="row">
+													<div class="col-8">
+														<span class="font-weight-bold" th:text="${reviewpage.getUser().getName()}"></span>
+													</div>
+													<div sec:authorize="isAuthenticated()" class="col-2 text-center">
+														<span th:if="${reviewpage.getUser().getId() == userId}"><a th:href="@{/houses/__${house.getId()}__/__${userId}__/__${reviewpage.getId()}__/edit}">編集</a></span>
+													</div>
+													<div sec:authorize="isAuthenticated()" class="col-2 text-center">
+														<span th:if="${reviewpage.getUser().getId() == userId}"><a href="#" class="samuraitravel-link-danger" data-bs-toggle="modal" th:data-bs-target="${'#deleteReviewModal' + reviewpage.getId()}">削除</a></span>
+	
+														<!-- 削除用モーダル -->
+														<div class="modal fade" th:id="${'deleteReviewModal' + reviewpage.getId()}" tabindex="-1" th:aria-labelledby="${'deleteReviewModal' + reviewpage.getId()}">
+														  	<div class="modal-dialog">
+														    	<div class="modal-content">
+															      	<div class="modal-header">
+															        	<h5 class="modal-title" th:id="${'deleteReviewModal' + reviewpage.getId()}" th:text="${house.getName() + 'のレビューを削除してもよろしいですか？'}"></h5>
+															        	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+															      	</div>
+															      	<div class="modal-footer">
+																		<form method="post" th:action="@{/houses/__${house.getId()}__/__${reviewpage.getId()}__/delete}">
+																			<button type="submit" class="btn samuraitravel-btn-danger text-white shadow-sm">削除</button>
+																		</form>
+															      	</div>
+														    	</div>
+														  	</div>
+														</div>
+													</div>
+												</div>
+											</div>
 									 		<span class="value-color" th:if="${reviewpage.getEvaluation() == 1}">&#9733;&#9734;&#9734;&#9734;&#9734;</span>
 									 		<span class="value-color" th:if="${reviewpage.getEvaluation() == 2}">&#9733;&#9733;&#9734;&#9734;&#9734;</span>
 									 		<span class="value-color" th:if="${reviewpage.getEvaluation() == 3}">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
